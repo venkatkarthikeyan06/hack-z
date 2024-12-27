@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalized Learning System</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #0056b3;
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .graphics {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .video-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .video-container iframe {
+      width: 300px;
+      height: 200px;
+    }
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto; /* Centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      border-radius: 5px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #007bff;
+      color: white;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to Personalized Learning System</h1>
+  </header>
+  <nav>
+    <a id="login-link">Login</a>
+    <a id="register-link">Register</a>
+  </nav>
+  <main>
+    <section class="graphics">
+      <h2>Supporting Neurodiverse Students</h2>
+      <img src="path/to/your/image.jpg" alt="Neurodiverse Learning" style="width: 100%; max-width: 600px; border-radius: 10px;">
+      <p>We provide tailored educational resources to empower neurodiverse learners.</p>
+    </section>
+    <section class="video-container">
+      <h2>Educational Videos</h2>
+      <iframe src="https://www.youtube.com/embed/your_video_id_1" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/your_video_id_2" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/your_video_id_3" frameborder="0" allowfullscreen></iframe>
+    </section>
+  </main>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-content">
+      <span class="close" id="closeLogin" aria-label="Close">&times;</span>
+      <h2 id="loginModalLabel">Login</h2>
+      <form id="login-form">
+        <label for="login-email">Email:</label>
+        <input type="email" id="login-email" name="email" required>
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" name="password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-content">
+      <span class="close" id="closeRegister" aria-label="Close">&times;</span>
+      <h2 id="registerModalLabel">Register</h2>
+      <form id="register-form">
+        <label for="register-name">Name:</label>
+        <input type="text" id="register-name" name="name" required>
+        <label for="register-email">Email:</label>
+        <input type="email" id="register-email" name="email" required>
+        <label for="register-password">Password:</label>
+        <input type="password" id="register-password" name="password" required>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2024 Personalized Learning System</p>
+  </footer>
+  <script>
+    // Handle login form submission
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          const { token } = await response.json();
+          localStorage.setItem('token', token); // Store token in local storage
+          window.location.href = '/dashboard.html'; // Redirect to dashboard
+        } else {
+          const error = await response.json();
+          alert('Login unsuccessful: ' + error.error);
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+        alert('Login unsuccessful: An error occurred.');
+      }
+    });
+
+    // Handle register form submission
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, password }),
+        });
+
+        if (response.ok) {
+          alert('Registration successful! You can now log in.');
+        } else {
+          const error = await response.json();
+          alert('Registration failed: ' + error.error);
+        }
+      } catch (error) {
+        console.error('Error registering:', error);
+        alert('Registration failed: An error occurred.');
+      }
+    });
+
+    // Modal functionality
+    const loginModal = document.getElementById("loginModal");
+    const registerModal = document.getElementById("registerModal");
+    const loginLink = document.getElementById("login-link");
+    const registerLink = document.getElementById("register-link");
+    const closeLogin = document.getElementById("closeLogin");
+    const closeRegister = document.getElementById("closeRegister");
+
+    loginLink.onclick = function() {
+      loginModal.style.display = "block";
+    };
+
+    registerLink.onclick = function() {
+      registerModal.style.display = "block";
+    };
+
+    closeLogin.onclick = function() {
+      loginModal.style.display = "none";
+    };
+
+    closeRegister.onclick = function() {
+      registerModal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target === loginModal) {
+        loginModal.style.display = "none";
+      }
+      if (event.target === registerModal) {
+        registerModal.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>
