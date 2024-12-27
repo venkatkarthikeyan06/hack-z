@@ -355,7 +355,7 @@
                 // Decode the token to get user information
                 const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
                 const userName = payload.name; // Get the user's name from the payload
-                document.getElementById('welcomeMessage').textContent = `Hello, ${userName}!`;
+                document.getElementById('welcomeMessage').textContent =`Hello, ${userName}!`;
             } catch (error) {
                 console.error('Error decoding token:', error);
                 localStorage.removeItem('token'); // Remove invalid token

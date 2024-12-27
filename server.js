@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -5,16 +6,16 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const port = 5000;
 
 // JWT Secret
-const JWT_SECRET = 'your_jwt_secret'; // Change this to a secure secret
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 // MongoDB Connection
-const mongoURI = "mongodb://127.0.0.1:27017/personalized_learning"; // Replace with your MongoDB URI
-mongoose.connect(mongoURI)
+mongoose.connect("mongodb://127.0.0.1:27017/personalized_learning")
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB Connection Error:', err));
 
@@ -38,25 +39,34 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Rate-Limiting Middleware
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per window
+});
+app.use(limiter);
+
 // JWT Authentication Middleware
 const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1];
-    if (token) {
-        jwt.verify(token, JWT_SECRET, (err, user) => {
-            if (err) return res.status(403).json({ error: 'Invalid token' });
-            req.user = user;
-            next();
-        });
-    } else {
-        res.status(403).json({ error: 'Authorization token is required' });
+    const authHeader = req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(403).json({ error: 'Authorization token is required' });
     }
+
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: 'Invalid token' });
+        req.user = user;
+        next();
+    });
 };
 
 // Routes
-
-// Register a new user
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ name, email, password: hashedPassword });
@@ -68,15 +78,16 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Login user
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
     try {
         const user = await User.findOne({ email });
-        if (!user) return res.status(401).json({ error: 'Invalid email or password' });
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(401).json({ error: 'Invalid email or password' });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
 
         const token = jwt.sign({ id: user._id, name: user.name }, JWT_SECRET, { expiresIn: '1h' });
         res.json({ token, name: user.name });
@@ -86,7 +97,6 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Get user data
 app.get('/api/user', authenticateJWT, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('name');
@@ -98,21 +108,22 @@ app.get('/api/user', authenticateJWT, async (req, res) => {
     }
 });
 
-// Submit a new score
-app.post('/api/score', async (req, res) => {
+app.post('/api/score', authenticateJWT, async (req, res) => {
+    const { score } = req.body;
+    if (score === undefined) {
+        return res.status(400).json({ error: 'Score is required' });
+    }
     try {
-        const newScore = new Score(req.body);
+        const newScore = new Score({ score });
         await newScore.save();
-        res.status(201).json({ message: 'Score saved successfully' }); // Send JSON response
+        res.status(201).json({ message: 'Score saved successfully' });
     } catch (error) {
         console.error('Error saving score:', error);
         res.status(500).json({ error: 'Failed to save score' });
     }
 });
 
-
-// Get the latest scores
-app.get('/api/scores', async (req, res) => {
+app.get('/api/scores', authenticateJWT, async (req, res) => {
     try {
         const scores = await Score.find().sort({ date: -1 }).limit(10);
         res.json(scores.map(s => ({ score: s.score, date: s.date })));
@@ -120,24 +131,6 @@ app.get('/api/scores', async (req, res) => {
         console.error('Error fetching scores:', error);
         res.status(500).json({ error: 'Failed to fetch scores' });
     }
-});
-
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Redirect to main page (index.html)
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Serve dashboard page
-app.get('/dashboard.html', authenticateJWT, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
-});
-
-// Serve main page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start the server
