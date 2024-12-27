@@ -30,6 +30,20 @@ const User = mongoose.model('User', userSchema); // Fixed extra space in model n
 // Middleware
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+const authenticateJWT = (req, res, next) => {
+    const token = req.header('Authorization')?.split(' ')[1];
+    if (token) {
+        jwt.verify(token, JWT_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(403);
+    }
+};
 
 // JWT Secret
 const JWT_SECRET = 'your_jwt_secret'; // Change this to a secure secret
@@ -73,8 +87,23 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// API endpoint to get user data
+app.get('/api/user', authenticateJWT, async (req, res) => { 
+    try {
+        const user = await User.findById(req.user.id).select('name'); // Fetch user name
+        if (user) {
+            res.json({ name: user.name });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ error: 'Failed to fetch user data' });
+    }
+});
+
 // Serve the introduction page
-app.get('/', (req, res) => {
+app.get('/main.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
