@@ -5,17 +5,159 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Powered Adaptive Mastering Platform</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(90deg, #007bff, #6610f2);
+            padding: 5rem 0;
+            color: white;
+        }
+
+        .header-text {
+            font-weight: bold;
+            font-size: 3rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .lead-text {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Navbar */
+        .navbar {
+            border-bottom: 2px solid #007bff;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.2rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #6610f2;
+            transform: scale(1.1);
+        }
+
+        /* Section Titles */
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            text-align: center;
+            color: #007bff;
+        }
+
+        /* Features Cards */
+        .card {
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        button {
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #343a40;
+            color: #ffffff;
+            font-size: 0.9rem;
+            padding: 1rem 0;
+        }
+
+        /* Modal */
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            border-top: none;
+        }
+
+        /* Responsive Tweaks */
+        .container {
+            max-width: 1200px;
+        }
+
+        @media (max-width: 768px) {
+            .header-text {
+                font-size: 2rem;
+            }
+
+            .lead-text {
+                font-size: 1rem;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+
+            .navbar-nav .nav-link {
+                font-size: 1rem;
+            }
+
+            .header-text {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="bg-primary text-white text-center py-5">
-        <h1>AI-Powered Adaptive Mastering Platform</h1>
-        <p>Empowering Neurodiverse and Special-Needs Students</p>
+    <header class="text-center">
+        <h1 class="header-text"> An Adaptive Learning Platform</h1>
+        <p class="lead lead-text">Empowering Neurodiverse and Special-Needs Students</p>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <a class="navbar-brand" href="#">Adaptive Learning</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria -label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -46,26 +188,26 @@
         <section id="features" class="mt-4">
             <h2>Features</h2>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4">
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Multi-modal Content</h5>
+                            <h5 class="card-title text-center">Multi-modal Content</h5>
                             <p class="card-text">Videos, interactive simulations, gamified tasks, and audio-based training.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Customizable Interface</h5>
+                            <h5 class="card-title text-center">Customizable Interface</h5>
                             <p class="card-text">Interface to match sensory preferences.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title">Supportive Features</h5>
+                            <h5 class="card-title text-center">Supportive Features</h5>
                             <p class="card-text">Text-to-speech, speech-to-text, and dyslexia-friendly fonts.</p>
                         </div>
                     </div>
@@ -79,8 +221,8 @@
         </section>
 
         <section class="mt-4 text-center">
-            <h2>Get Started</h2>
-            <button id="startButton" class="btn btn-success btn-lg">Start Learning</button>
+            <h2 class="display-4 text-success">Get Started</h2>
+            <button id="startButton" class="btn btn-success btn-lg shadow-lg">Start Learning</button>
         </section>
         
     </div>
@@ -111,7 +253,7 @@
                         </div>
                         <div class="form-group">
                             <label for="message">Message</label>
-                            <textarea class="form-control" id="message" rows="3" required></textarea>
+                            <textarea class="form-control" id=" message" rows="3" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
@@ -119,7 +261,7 @@
             </div>
         </div>
     </div>
-
+         
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
