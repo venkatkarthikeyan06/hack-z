@@ -28,14 +28,18 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
 });
 
-
-const scoreSchema = new mongoose.Schema({
-    score: { type: Number, required: true },
+const personalizationSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    age: { type: Number, required: true },
+    courseLevel: { type: String, required: true },
+    videoType: { type: String, required: true },
+    learningContent: { type: String, required: true },
+    language: { type: String, required: true },
     date: { type: Date, default: Date.now },
 });
 
 const User = mongoose.model('User', userSchema);
-const Score = mongoose.model('Score', scoreSchema);
+const Personalization = mongoose.model('Personalization', personalizationSchema);
 
 // Middleware
 app.use(cors());
@@ -49,26 +53,10 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// JWT Authentication Middleware
-const authenticateJWT = (req, res, next) => {
-    const authHeader = req.header('Authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(403).json({ error: 'Authorization token is required' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, JWT_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ error: 'Invalid token' });
-        req.user = user;
-        next();
-    });
-};
-
-// Routes
+// Routes for User Authentication
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
 
-    console.log(req.body); // Debugging
     if (!name || !email || !password) {
         return res.status(400).json({ error: 'All fields are required' });
     }
@@ -83,60 +71,36 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// New Route for Storing Personalization Data
+app.post('/api/personalization', async (req, res) => {
+    const { name, age, courseLevel, videoType, learningContent, language } = req.body;
 
-
-app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    if (!name || !age || !courseLevel || !videoType || !learningContent || !language) {
         return res.status(400).json({ error: 'All fields are required' });
     }
-    try {
-        const user = await User.findOne({ email });
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
 
-        const token = jwt.sign({ id: user._id, name: user.name }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token, name: user.name });
-    } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).json({ error: 'Failed to log in' });
-    }
-});
-
-app.get('/api/user', authenticateJWT, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('name');
-        if (!user) return res.status(404).json({ error: 'User not found' });
-        res.json({ name: user.name });
+        const newPersonalization = new Personalization({
+            name,
+            age,
+            courseLevel,
+            videoType,
+            learningContent,
+            language,
+        });
+        await newPersonalization.save();
+        res.status(201).json({ message: 'Personalization data saved successfully' });
     } catch (error) {
-        console.error('Error fetching user data:', error);
-        res.status(500).json({ error: 'Failed to fetch user data' });
+        console.error('Error saving personalization data:', error);
+        res.status(500).json({ error: 'Failed to save personalization data' });
     }
-});
 
-app.post('/api/score', authenticateJWT, async (req, res) => {
-    const { score } = req.body;
-    if (score === undefined) {
-        return res.status(400).json({ error: 'Score is required' });
-    }
     try {
-        const newScore = new Score({ score });
-        await newScore.save();
-        res.status(201).json({ message: 'Score saved successfully' });
+        const personalizationData = await Personalization.find().sort({ date: -1 }).limit(10); // Get the latest 10 entries
+        res.json(personalizationData);
     } catch (error) {
-        console.error('Error saving score:', error);
-        res.status(500).json({ error: 'Failed to save score' });
-    }
-});
-
-app.get('/api/scores', authenticateJWT, async (req, res) => {
-    try {
-        const scores = await Score.find().sort({ date: -1 }).limit(10);
-        res.json(scores.map(s => ({ score: s.score, date: s.date })));
-    } catch (error) {
-        console.error('Error fetching scores:', error);
-        res.status(500).json({ error: 'Failed to fetch scores' });
+        console.error('Error fetching personalization data:', error);
+        res.status(500).json({ error: 'Failed to fetch personalization data' });
     }
 });
 

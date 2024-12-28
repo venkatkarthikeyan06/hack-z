@@ -85,7 +85,9 @@
     </div>
     <script>
         // Ensure script runs after DOM is loaded
-        
+        alert(result.message);
+window.location.href = '/feedback.html';
+
     // Ensure script runs after DOM is loaded
     document.addEventListener('DOMContentLoaded', function () {
         // Attach event listener to the form
@@ -130,6 +132,42 @@
 
             // Redirect user
             window.location.href = redirectPage;
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('personalization-form');
+            
+                form.addEventListener('submit', async function (event) {
+                    event.preventDefault();
+            
+                    const data = {
+                        name: document.getElementById('name').value.trim(),
+                        age: parseInt(document.getElementById('age').value, 10),
+                        courseLevel: document.getElementById('course-level').value,
+                        videoType: document.getElementById('video-type').value,
+                        learningContent: document.getElementById('learning-content').value,
+                        language: document.getElementById('language').value,
+                    };
+            
+                    try {
+                        const response = await fetch('/api/personalization', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data),
+                        });
+            
+                        const result = await response.json();
+                        if (response.ok) {
+                            alert(result.message);
+                        } else {
+                            alert(`Error: ${result.error}`);
+                        }
+                    } catch (error) {
+                        console.error('Error submitting personalization data:', error);
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            });
+            
         });
     });
 
