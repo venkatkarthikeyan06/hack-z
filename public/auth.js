@@ -34,8 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // The rest of the script remains unchanged
        // Handle register form submission
        const registerForm = document.getElementById('register-form');
        if (registerForm) {
