@@ -160,8 +160,6 @@
               <input type="password" class="form-control" id="login-password" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Login</button>
-            <button class="btn btn-primary btn-block" onclick="toggleAuthForms()">Switch to Register</button>
-
           </form>
         </div>
       </div>
@@ -207,21 +205,5 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="auth.js"></script>
-  <script>
-    function toggleAuthForms() {
-      const loginForm = document.getElementById('login-form');
-      const registerForm = document.getElementById('register-form');
-
-  
-      if (loginForm.style.display === 'none') {
-          loginForm.style.display = 'block';
-          registerForm.style.display = 'none';
-      } else {
-          loginForm.style.display = 'none';
-          registerForm.style.display = 'block';
-      }
-  }
-  
-  </script>
 </body>
 </html>
