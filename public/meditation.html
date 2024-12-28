@@ -14,18 +14,98 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f5f7fa;
+            margin: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            overflow: hidden;
         }
+
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
         video {
-            display: none; /* Hide video element */
+            display: none;
         }
+
         canvas {
-            position: absolute;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: popIn 1s ease-in-out;
+        }
+
+        p#message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Add glow effect */
+        canvas {
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Smooth animations for buttons or interactive elements */
+        button {
+            background: #ffd700;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #000;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #ffc107;
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
-    <h2>DON'T OPEN YOUR EYES ! IT'S MEDITATION TIME</h2>
+    <h2>RUB YOUR HANDS<br/>KEEP IT ON EYES<br/>IT'S MEDITATION TIME</h2>
     <video id="video" width="720" height="560" autoplay muted></video>
     <canvas id="canvas" width="720" height="560"></canvas>
     <p id="message"></p>
