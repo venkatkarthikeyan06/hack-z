@@ -14,7 +14,6 @@ const port = 5000;
 // JWT Secret
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
-// MongoDB Connection  
 // MongoDB Connection
 mongoose.connect('mongodb://127.0.0.1:27017/personalized_learning')
     .then(() => {
