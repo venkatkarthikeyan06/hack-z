@@ -114,19 +114,28 @@
             // Define mapping for redirections
             const mappings = {
                 "beginner-animated-interactive-english": "dashboard.html",
-                "beginner-normal-theory-telugu": "btelugu.html",
-                "advanced-animated-interactive-english": "abeginer.html",
-                "advanced-normal-theory-telugu": "atheory.html"
+                "beginner-animated-interactive-telugu": "btelugu.html",
+                "beginner-animated-theory-english" :"dashboard.html",
+                "beginner-animated-theory-telugu" : "btelugu.html",
+                "beginner-normal-theory-telugu" : "btelugu.html",
+                "beginner-normal-interactive-english"  : "dashboard.html",
+                "beginner-normal-interactive-telugu" : "btelugu.html",
+                "beginner-normal-theory-english" : "dashboard.html",
+                "advanced-animated-interactive-english" : "abeginer.html",
+                "advanced-animated-interactive-telugu" : "atheory.html",
+                "advanced-animated-theory-english" : "abeginer.html",
+                "advanced-normal-interactive-english" : "abeginer.html",
+                "advanced-normal-interactive-telugu" : "atheory.html",
+                "advanced-normal-theory-english" : "abeginer.html",
+                "advanced-animated-theory-telugu" : "atheory.html",
+                "advanced-normal-theory-telugu" : "atheory.html"
             };
 
             // Generate key for redirection mapping
             const key = `${courseLevel}-${videoType}-${learningContent}-${language}`; // Corrected syntax
-            const redirectPage = mappings[key] || "default.html";
+            const redirectPage = mappings[key];
 
             // Notify user if redirecting to the default page
-            if (redirectPage === "default.html") {
-                alert("No matching course found. Redirecting to default page.");
-            }
 
             // Redirect user
             window.location.href = redirectPage;
