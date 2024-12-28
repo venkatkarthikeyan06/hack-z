@@ -37,37 +37,39 @@ document.addEventListener('DOMContentLoaded', () => {
        // Handle register form submission
        const registerForm = document.getElementById('register-form');
        if (registerForm) {
-           registerForm.addEventListener('submit', async (e) => {
-               e.preventDefault();
-               const name = document.getElementById('register-name').value.trim();
-               const email = document.getElementById('register-email').value.trim();
-               const password = document.getElementById('register-password').value.trim();
-   
-               if (!name || !email || !password) {
-                   alert('Please fill in all fields.');
-                   return;
-               }
-   
-               try {
-                   const response = await fetch('/register', {
-                       method: 'POST',
-                       headers: { 'Content-Type': 'application/json' },
-                       body: JSON.stringify({ name, email, password }),
-                   });
-   
-                   if (response.ok) {
-                       alert('Registration successful! You can now log in.');
-                       registerForm.reset();
-                   } else {
-                       const error = await response.json();
-                       alert(`Registration failed: ${error.error || 'Unknown error'}`);
-                   }
-               } catch (err) {
-                   console.error('Error registering:', err);
-                   alert('Registration failed: An error occurred.');
-               }
-           });
-       }
+        registerForm.addEventListener('submit', async (e) => {
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+
+console.log({ name, email, password }); // Add this for debugging
+
+            if (!name || !email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+    
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password }),
+                });
+    
+                if (response.ok) {
+                    alert('Registration successful! You can now log in.');
+                    registerForm.reset();
+                } else {
+                    const error = await response.json();
+                    alert(`Registration failed: ${error.error || 'Unknown error'}`);
+                }
+            } catch (err) {
+                console.error('Error registering:', err);
+                alert('Registration failed: An error occurred.');
+            }
+        });
+    }
+    
    
        // Modal functionality
        const loginModal = document.getElementById('loginModal');
