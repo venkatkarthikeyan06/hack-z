@@ -5,149 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Powered Adaptive Mastering Platform</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Global Styles */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(90deg, #007bff, #6610f2);
-            padding: 5rem 0;
-            color: white;
-        }
-
-        .header-text {
-            font-weight: bold;
-            font-size: 3rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .lead-text {
-            font-size: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        /* Navbar */
-        .navbar {
-            border-bottom: 2px solid #007bff;
-        }
-
-        .navbar-nav .nav-link {
-            font-size: 1.2rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #6610f2;
-            transform: scale(1.1);
-        }
-
-        /* Section Titles */
-        h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            text-align: center;
-            color: #007bff;
-        }
-
-        /* Features Cards */
-        .card {
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-title {
-            font-weight: bold;
-        }
-
-        /* Buttons */
-        button {
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        button:active {
-            transform: scale(1);
-        }
-
-        /* Footer */
-        footer {
-            background-color: #343a40;
-            color: #ffffff;
-            font-size: 0.9rem;
-            padding: 1rem 0;
-        }
-
-        /* Modal */
-        .modal-header {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .modal-footer {
-            border-top: none;
-        }
-
-        /* Responsive Tweaks */
-        .container {
-            max-width: 1200px;
-        }
-
-        @media (max-width: 768px) {
-            .header-text {
-                font-size: 2rem;
+        <style>
+            /* General Styling */
+            body {
+                background-color: #f5f7fa;
+                font-family: 'Poppins', sans-serif;
+                line-height: 1.8;
             }
-
-            .lead-text {
-                font-size: 1rem;
+        
+            .section-heading {
+                text-align: center;
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 20px;
+                color: #010509;
+                text-transform: uppercase;
             }
-
-            .card-body {
-                padding: 1rem;
+        
+            /* Navbar */
+            .navbar {
+                background: linear-gradient(135deg, #020e1b, #0056b3);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
-
-            h2 {
+        
+            .navbar-brand {
+                font-weight: bold;
+                color: #fff !important;
                 font-size: 1.5rem;
             }
-        }
-
-        @media (max-width: 576px) {
-            .navbar-brand {
+        
+            .nav-link {
+                color: white !important;
+                font-size: 1.1rem;
+                margin-right: 20px;
+                transition: color 0.3s ease, transform 0.3s ease;
+            }
+        
+            .nav-link:hover {
+                color: #ffd700 !important;
+                transform: scale(1.1);
+            }
+        
+            /* Hero Section */
+            header {
+                background: linear-gradient(135deg, #0056b3, #1e90ff, #030507);
+                color: white;
+                text-align: center;
+                padding: 100px 20px;
+                border-bottom: 5px solid #0056b3;
+                background-attachment: fixed;
+            }
+        
+            header h1 {
+                font-size: 4rem;
+                font-weight: bold;
+            }
+        
+            header p {
+                font-size: 1.3rem;
+                margin-bottom: 30px;
+            }
+        
+            .btn-primary {
+                background-color: #ffd700;
+                color: #000103;
+                border: none;
                 font-size: 1.2rem;
+                padding: 10px 25px;
+                border-radius: 30px;
+                transition: all 0.3s ease;
             }
-
-            .navbar-nav .nav-link {
-                font-size: 1rem;
+        
+            .btn-primary:hover {
+                background-color: #ffc107;
+                transform: scale(1.1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             }
-
-            .header-text {
-                font-size: 1.8rem;
+        
+            /* Features Section */
+            .card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                border-radius: 15px;
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+                background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             }
-
-            h2 {
-                font-size: 1.2rem;
+        
+            .card:hover {
+                transform: translateY(-10px) scale(1.05);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(135deg, #bbdefb, #90caf9);
             }
-        }
-    </style>
+        
+            .card-title {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #0056b3;
+                text-transform: uppercase;
+            }
+        
+            .card-text {
+                font-size: 1.1rem;
+                color: #555;
+            }
+        
+            /* Footer */
+            footer {
+                background: linear-gradient(135deg, #343a40, #23272b);
+                color: white;
+                padding: 40px 0;
+                text-align: center;
+            }
+        
+            footer p {
+                margin: 0;
+                font-size: 0.9rem;
+            }
+        
+            footer a {
+                color: #ffd700;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+        
+            footer a:hover {
+                color: #ffc107;
+            }
+        
+            /* Responsive Styling */
+            @media (max-width: 992px) {
+                header h1 {
+                    font-size: 3.2rem;
+                }
+            }
+        
+            @media (max-width: 768px) {
+                header h1 {
+                    font-size: 2.5rem;
+                }
+        
+                header p {
+                    font-size: 1.1rem;
+                }
+        
+                .btn-primary {
+                    font-size: 1rem;
+                    padding: 8px 20px;
+                }
+            }
+        
+            @media (max-width: 576px) {
+                .navbar-brand {
+                    font-size: 1.2rem;
+                }
+        
+                .nav-link {
+                    font-size: 1rem;
+                }
+        
+                footer {
+                    font-size: 0.8rem;
+                }
+            }
+        </style>
 </head>
 <body>
     <header class="text-center">
@@ -163,7 +182,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#about">About</a>
+                    <a class="nav-link" id="about" href="#about">About</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#features">Features</a>
@@ -172,7 +191,7 @@
                     <a class="nav-link" href="#benefits">Benefits</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact" data-toggle="modal" data-target="#contactModal">Contact</a>
+                    <a class="nav-link" href="#contact" data-toggle="modal" data-target="#contactModal">Contact us</a>
                 </li>
             </ul>
         </div>
@@ -267,4 +286,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
 </body>
-</html>
+</html> 

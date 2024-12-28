@@ -3,137 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face Recognition and Eye Movement Detection</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
-    <script async src="https://docs.opencv.org/4.x/opencv.js" type="text/javascript" onload="onOpenCvReady()"></script>
+    <title>Real-Time Monitoring</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             background-color: #f5f7fa;
+            font-family: 'Poppins', sans-serif;
         }
-        video {
-            display: none; /* Hide video element */
+
+        .section-heading {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #010509;
+            text-transform: uppercase;
         }
-        canvas {
-            position: absolute;
+
+        .navbar {
+            background: linear-gradient(135deg, #020e1b, #0056b3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff !important;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 1.1rem;
+            margin-right: 20px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffd700 !important;
+            transform: scale(1.1);
+        }
+
+        .navbar-toggler {
+            border-color: #fff;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0056b3, #1e90ff, #030507);
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            border-bottom: 5px solid #0056b3;
+            position: relative;
+            background-attachment: fixed;
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            animation: fadeIn 2s;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #bbdefb, #90caf9);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0056b3;
+            text-transform: uppercase;
+        }
+
+        .card-text {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #343a40, #23272b);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInFooter 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeInFooter {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #ffd700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #ffc107;
         }
     </style>
 </head>
 <body>
-    <h1>Face Recognition and Eye Movement Detection</h1>
-    <video id="video" width="720" height="560" autoplay muted></video>
-    <canvas id="canvas" width="720" height="560"></canvas>
-    <p id="message"></p>
 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-graph-up"></i> Real-Time Monitoring
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html
+                        ">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Real-Time Insights</h1>
+            <p class="lead">Monitor and enhance performance with real-time data analysis.</p>
+        </div>
+    </section>
+
+    <!-- Monitoring Section -->
+    <section id="monitoring">
+        <div class="container">
+            <h2 class="section-heading">Monitoring Categories</h2>
+            <div class="row g-4">
+                <div class="col-md-4" onclick="redirectToPage('meditation.html')">
+                    <div class="card p-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Meditation</h5>
+                            <p class="card-text">Track and refine your poses with real-time feedback for better alignment and flexibility.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Body Language</h5>
+                            <p class="card-text">Analyze posture and gestures to improve communication and confidence.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Hosted Therapy</h5>
+                            <p class="card-text">Receive insights on tone, pace, and clarity to enhance your verbal interactions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Real-Time Monitoring. All rights reserved. | <a href="#">Privacy Policy</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Function called when OpenCV.js is ready
-        function onOpenCvReady() {
-            console.log("OpenCV.js is ready!");
-            detectFace();
-        }
-
-        async function setupCamera() {
-            const video = document.getElementById('video');
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-
-            return new Promise((resolve) => {
-                video.onloadedmetadata = () => {
-                    resolve(video);
-                };
-            });
-        }
-
-        async function detectFace() {
-            const video = await setupCamera();
-            video.play();
-
-            const model = await blazeface.load();  // Correct function to load BlazeFace model
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-
-            async function detect() {
-                const predictions = await model.estimateFaces(video, false);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                predictions.forEach(prediction => {
-                    ctx.beginPath();
-                    ctx.rect(
-                        prediction.topLeft[0],
-                        prediction.topLeft[1],
-                        prediction.bottomRight[0] - prediction.topLeft[0],
-                        prediction.bottomRight[1] - prediction.topLeft[1]
-                    );
-                    ctx.lineWidth = 2;
-                    ctx.strokeStyle = 'red';
-                    ctx.stroke();
-                });
-
-                if (predictions.length > 0) {
-                    // Call the function to check eye movement
-                    checkEyeMovement(video);
-                }
-
-                requestAnimationFrame(detect);
-            }
-
-            detect();
-        }
-
-        async function checkEyeMovement(video) {
-            if (video.readyState === 4) { // Ensure the video is ready
-                // Capture video frame
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-                // Manually create a Mat object from ImageData
-                const src = cv.matFromArray(imageData.height, imageData.width, cv.CV_8UC4, imageData.data);
-                const gray = new cv.Mat();
-                cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
-
-                // Load Haar Cascade for eye and face detection
-                const eyeCascade = new cv.CascadeClassifier();
-                const faceCascade = new cv.CascadeClassifier();
-
-                eyeCascade.load('haarcascade_eye.xml');  // Ensure you have this file available
-                faceCascade.load('haarcascade_frontalface_default.xml'); // Ensure this file is available
-
-                const eyes = new cv.RectVector();
-                const faces = new cv.RectVector();
-
-                faceCascade.detectMultiScale(gray, faces, 1.1, 3, 0);
-
-                for (let i = 0; i < faces.size(); i++) {
-                    const face = faces.get(i);
-                    const roiGray = gray.roi(face);
-                    eyeCascade.detectMultiScale(roiGray, eyes, 1.1, 3, 0);
-
-                    if (eyes.size() > 0) {
-                        document.getElementById('message').textContent = "Eyes Detected!";
-                    } else {
-                        document.getElementById('message').textContent = "Eyes Closed!";
-                    }
-                    roiGray.delete();
-                }
-
-                // Clean up
-                src.delete();
-                gray.delete();
-                eyes.delete();
-                faces.delete();
-            } else {
-                console.warn("Video not ready for processing.");
-            }
+        function redirectToPage(page) {
+            window.location.href = page;
         }
     </script>
 </body>
