@@ -40,15 +40,15 @@
             <h1 class="text-center text-primary mb-4">Personalize Your Learning Experience</h1>
             <form id="personalization-form">
                 <div class="row mb-3">
-                   <!----<div class="col-md-6">
-                        <label for="name" class="form-label">name</label>
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Name</label>
                         <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
                     </div>
                     <div class="col-md-6">
                         <label for="age" class="form-label">Age</label>
                         <input type="number" id="age" name="age" class="form-control" placeholder="Enter your age" min="1" max="120" required>
                     </div>
-                </div> -->
+                </div>
                 <div class="mb-3">
                     <label for="course-level" class="form-label">Course Level</label>
                     <select id="course-level" name="courseLevel" class="form-select">
@@ -60,7 +60,7 @@
                     <label for="video-type" class="form-label">Course Video Type</label>
                     <select id="video-type" name="videoType" class="form-select">
                         <option value="animated">Animated</option>
-                        <option value="normal">normal</option>
+                        <option value="normal">Normal</option>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -117,7 +117,7 @@
                 };
 
                 // Generate key for redirection mapping
-                const key = `${courseLevel}-${videoType}-${learningContent}-${language}`;
+                const key = ${courseLevel}-${videoType}-${learningContent}-${language};
                 const redirectPage = mappings[key] || "default.html";
 
                 // Notify user if redirecting to the default page
