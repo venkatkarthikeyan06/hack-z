@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+        .section-heading {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #010509;
+            text-transform: uppercase;
+        }
+        .feedback-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .feedback-container:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .input-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .response-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #bbdefb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .response-input:focus {
+            border-color: #90caf9;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        }
+        .feedback {
+            font-size: 1.1rem;
+            color: #555;
+            margin-top: 10px;
+        }
+        .positive-feedback {
+            color: #28a745;
+        }
+        .negative-feedback {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="feedback-container">
+        <h1 class="section-heading">Real-Time Feedback</h1>
+        <label for="response" class="input-label">Enter Your Response:</label>
+        <input 
+            type="text" 
+            id="response" 
+            class="response-input" 
+            placeholder="Type something..." 
+            oninput="provideFeedback()" 
+        />
+        <p id="feedback" class="feedback"></p>
+    </div>
+
+    <script>
+        function provideFeedback() {
+            const response = document.getElementById('response').value;
+            const feedback = document.getElementById('feedback');
+
+            if (response.trim().length === 0) {
+                feedback.textContent = "Please enter a response to receive feedback.";
+                feedback.className = "feedback negative-feedback";
+            } else if (response.length < 10) {
+                feedback.textContent = "Try to provide a more detailed response.";
+                feedback.className = "feedback negative-feedback";
+            } else {
+                feedback.textContent = "Great response! Keep it up!";
+                feedback.className = "feedback positive-feedback";
+            }
+        }
+    </script>
+    <script src="https://widget.cxgenie.ai/widget.js" data-aid="818e31f6-8f07-40c6-b542-5bbe29a36bee" data-lang="en"></script>
+</body>
+</html>
