@@ -85,50 +85,55 @@
     </div>
     <script>
         // Ensure script runs after DOM is loaded
-        document.addEventListener('DOMContentLoaded', function () {
-            // Attach event listener to the form
-            const form = document.getElementById('personalization-form');
-            form.addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent form's default submission
+        
+    // Ensure script runs after DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        // Attach event listener to the form
+        const form = document.getElementById('personalization-form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form's default submission
 
-                // Retrieve form values
-                const name = document.getElementById('name').value.trim();
-                const age = parseInt(document.getElementById('age').value, 10);
-                const courseLevel = document.getElementById('course-level').value;
-                const videoType = document.getElementById('video-type').value;
-                const learningContent = document.getElementById('learning-content').value;
-                const language = document.getElementById('language').value;
+            // Retrieve form values
+            const name = document.getElementById('name').value.trim();
+            const age = parseInt(document.getElementById('age').value, 10);
+            const courseLevel = document.getElementById('course-level').value;
+            const videoType = document.getElementById('video-type').value;
+            const learningContent = document.getElementById('learning-content').value;
+            const language = document.getElementById('language').value;
 
-                // Input validation
-                if (!name) {
-                    alert("Please enter your name.");
-                    return;
-                }
-                if (!age || isNaN(age) || age <= 0) {
-                    alert("Please enter a valid age greater than 0.");
-                    return;
-                }
-                // Define mapping for redirections
-                const mappings = {
-                    "beginner-animated-interactive-english": "dashboard.html",
-                    "beginner-normal-theory-telugu": "btelugu.html",
-                    "advanced-animated-interactive-english": "abeginer.html",
-                    "advanced-normal-theory-telugu":"atheory.html"
-                };
+            // Input validation
+            if (!name) {
+                alert("Please enter your name.");
+                return;
+            }
+            if (!age || isNaN(age) || age <= 0) {
+                alert("Please enter a valid age greater than 0.");
+                return;
+            }
 
-                // Generate key for redirection mapping
-                const key = `${courseLevel}-${videoType}-${learningContent}-${language}`;
-                const redirectPage = mappings[key] || "default.html";
+            // Define mapping for redirections
+            const mappings = {
+                "beginner-animated-interactive-english": "dashboard.html",
+                "beginner-normal-theory-telugu": "btelugu.html",
+                "advanced-animated-interactive-english": "abeginer.html",
+                "advanced-normal-theory-telugu": "atheory.html"
+            };
 
-                // Notify user if redirecting to the default page
-                if (redirectPage === "default.html") {
-                    alert("No matching course found. Redirecting to default page.");
-                }
+            // Generate key for redirection mapping
+            const key = `${courseLevel}-${videoType}-${learningContent}-${language}`; // Corrected syntax
+            const redirectPage = mappings[key] || "default.html";
 
-                // Redirect user
-                window.location.href = redirectPage;
-            });
+            // Notify user if redirecting to the default page
+            if (redirectPage === "default.html") {
+                alert("No matching course found. Redirecting to default page.");
+            }
+
+            // Redirect user
+            window.location.href = redirectPage;
         });
+    });
+
+
     </script>
 </body>
 </html>
