@@ -88,8 +88,4 @@ document.addEventListener('DOMContentLoaded', () => {
                if (event.target === registerModal) registerModal.style.display = 'none';
            };
        }
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 3f52757e22dd9c0f3b924cbd540b0d2c44cd0296
