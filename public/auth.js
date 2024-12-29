@@ -35,5 +35,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // The rest of the script remains unchanged
+    // Handle register form submission
+    const registerForm = document.getElementById('register-form');
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+
+            if (!name || !email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password }),
+                });
+
+                if (response.ok) {
+                    alert('Registration successful! Please log in.');
+                    // Optionally clear the form or redirect to login
+                    registerForm.reset();
+                } else {
+                    const error = await response.json();
+                    alert(`Registration unsuccessful: ${error.error || 'Unknown error'}`);
+                }
+            } catch (err) {
+                console.error('Error registering:', err);
+                alert('Registration unsuccessful: An error occurred.');
+            }
+        });
+    }
 });
