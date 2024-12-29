@@ -39,6 +39,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 // Rate-Limiting Middleware
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -60,6 +62,25 @@ const authenticateJWT = (req, res, next) => {
         next();
     });
 };
+
+app.post('/api/personalization', authenticateJWT, async (req, res) => {
+    console.log("Request received at /api/personalization");
+
+    const { personalizationData } = req.body;
+
+    if (!personalizationData) {
+        return res.status(400).json({ error: 'Personalization data is required' });
+    }
+    try {
+        // Example: Process the data without saving to DB
+        console.log('Received personalization data:', personalizationData);
+
+        res.status(201).json({ message: 'Personalization data received successfully' });
+    } catch (error) {
+        console.error('Error handling personalization data:', error);
+        res.status(500).json({ error: 'Failed to process personalization data' });
+    }
+});
 
 // Routes
 app.post('/register', async (req, res) => {
@@ -141,6 +162,7 @@ app.get('/api/scores', authenticateJWT, async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch scores' });
     }
 });
+
 
 // Start the server
 app.listen(port, () => {

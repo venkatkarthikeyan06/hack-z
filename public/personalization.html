@@ -85,89 +85,104 @@
     </div>
     <script>
         // Ensure script runs after DOM is loaded
-            
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('personalization-form');
         
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('personalization-form');
-
-        form.addEventListener('submit', async function (event) {
-            event.preventDefault(); // Prevent form's default submission
-
-            // Retrieve form values
-            const name = document.getElementById('name').value.trim();
-            const age = parseInt(document.getElementById('age').value, 10);
-            const courseLevel = document.getElementById('course-level').value;
-            const videoType = document.getElementById('video-type').value;
-            const learningContent = document.getElementById('learning-content').value;
-            const language = document.getElementById('language').value;
-
-            // Input validation
-            if (!name) {
-                alert("Please enter your name.");
-                return;
-            }
-            if (!age || isNaN(age) || age <= 0) {
-                alert("Please enter a valid age greater than 0.");
-                return;
-            }
-
-            // Define mappings for redirection
-            const mappings = {
-                "beginner-animated-interactive-english": "dashboard.html",
-                "beginner-animated-interactive-telugu": "btelugu.html",
-                "beginner-animated-theory-english" :"dashboard.html",
-                "beginner-animated-theory-telugu" : "btelugu.html",
-                "beginner-normal-theory-telugu" : "btelugu.html",
-                "beginner-normal-interactive-english"  : "dashboard.html",
-                "beginner-normal-interactive-telugu" : "btelugu.html",
-                "beginner-normal-theory-english" : "dashboard.html",
-                "advanced-animated-interactive-english" : "abeginer.html",
-                "advanced-animated-interactive-telugu" : "atheory.html",
-                "advanced-animated-theory-english" : "abeginer.html",
-                "advanced-normal-interactive-english" : "abeginer.html",
-                "advanced-normal-interactive-telugu" : "atheory.html",
-                "advanced-normal-theory-english" : "abeginer.html",
-                "advanced-animated-theory-telugu" : "atheory.html",
-                "advanced-normal-theory-telugu" : "atheory.html"
-            };
-
-            // Generate key for redirection mapping
-            const key = `${courseLevel}-${videoType}-${learningContent}-${language}`; // Corrected syntax
-            const redirectPage = mappings[key];
-
-            // Notify user if redirecting to the default page
-
-            try {
-                // Send data to server for personalization (ensure user is logged in)
-                const response = await fetch('/api/personalization', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name,
-                        age,
-                        courseLevel,
-                        videoType,
-                        learningContent,
-                        language,
-                    }),
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    // Successfully personalized, redirect
-                    alert(result.message);
-                    window.location.href = redirectPage;
-                } else {
-                    // Handle server errors
-                    alert(`Error: ${result.error}`);
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault(); // Prevent form's default submission
+        
+                // Retrieve form values
+                const name = document.getElementById('name').value.trim();
+                const age = parseInt(document.getElementById('age').value, 10);
+                const courseLevel = document.getElementById('course-level').value;
+                const videoType = document.getElementById('video-type').value;
+                const learningContent = document.getElementById('learning-content').value;
+                const language = document.getElementById('language').value;
+        
+                // Input validation
+                if (!name) {
+                    alert("Please enter your name.");
+                    return;
                 }
-            } catch (error) {
-                console.error('Error submitting personalization data:', error);
-                alert('An error occurred. Please try again.');
-            }
+                if (!age || isNaN(age) || age <= 0) {
+                    alert("Please enter a valid age greater than 0.");
+                    return;
+                }
+
+                // Retrieve JWT token from localStorage (or sessionStorage)
+                const token = localStorage.getItem('token'); // Ensure this matches how your token is stored
+                if (!token) {
+                    alert("You must log in before submitting the form.");
+                    return;
+                }
+        
+                // Define mappings for redirection
+                const mappings = {
+                    "beginner-animated-interactive-english": "dashboard.html",
+                    "beginner-animated-interactive-telugu": "btelugu.html",
+                    "beginner-animated-theory-english": "dashboard.html",
+                    "beginner-animated-theory-telugu": "btelugu.html",
+                    "beginner-normal-theory-telugu": "btelugu.html",
+                    "beginner-normal-interactive-english": "dashboard.html",
+                    "beginner-normal-interactive-telugu": "btelugu.html",
+                    "beginner-normal-theory-english": "dashboard.html",
+                    "advanced-animated-interactive-english": "abeginer.html",
+                    "advanced-animated-interactive-telugu": "atheory.html",
+                    "advanced-animated-theory-english": "abeginer.html",
+                    "advanced-normal-interactive-english": "abeginer.html",
+                    "advanced-normal-interactive-telugu": "atheory.html",
+                    "advanced-normal-theory-english": "abeginer.html",
+                    "advanced-animated-theory-telugu": "atheory.html",
+                    "advanced-normal-theory-telugu": "atheory.html"
+                };
+        
+                // Generate key for redirection mapping
+                const key = `${courseLevel}-${videoType}-${learningContent}-${language}`;
+                console.log("Generated key:", key); // Debugging
+                const redirectPage = mappings[key] || "dashboard.html";
+        
+                if (!redirectPage) {
+                    alert("Sorry, no matching course found for your selections.");
+                    return;
+                }
+        
+                try {
+                    // Send data to server for personalization
+                    const response = await fetch('http://localhost:5000/api/personalization', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            personalizationData: { name, age, courseLevel, videoType, learningContent, language }
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text(); // Get the actual response text
+                        console.error('Error response from server:', errorText);
+                        alert(`Error: ${response.status} - ${response.statusText}`);
+                        return;
+                    }
+        
+                    const result = await response.json();
+        
+                    if (response.ok) {
+                        // Successfully personalized, redirect
+                        alert(result.message);
+                        console.log("Redirecting to:", redirectPage); // Debugging
+                        window.location.href = redirectPage;
+                    } else {
+                        // Handle server errors
+                        alert(`Error: ${result.error}`);
+                    }
+                } catch (error) {
+                    console.error('Error submitting personalization data:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            });
         });
-    });
 </script>
     <script src="https://widget.cxgenie.ai/widget.js" data-aid="818e31f6-8f07-40c6-b542-5bbe29a36bee" data-lang="en"></script>
 </body>
