@@ -11,11 +11,12 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const port = 5000;
 
+
 // JWT Secret
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/personalized_learning")
+mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB Connection Error:', err));
 
